@@ -23,13 +23,28 @@ class UserView(ttk.Frame):
 
         ttk.Label(form_frame, text="Role").grid(row=2, column=0, sticky="w", padx=5, pady=5)
         self.role_var = tk.StringVar(value="developer")
-        self.role_combo = ttk.Combobox(form_frame, textvariable=self.role_var, values=["admin", "manager", "developer"], state="readonly", width=20)
+        self.role_combo = ttk.Combobox(
+            form_frame,
+            textvariable=self.role_var,
+            values=["admin", "manager", "developer"],
+            state="readonly",
+            width=20,
+        )
         self.role_combo.grid(row=2, column=1, padx=5, pady=5, sticky="w")
 
-        ttk.Button(form_frame, text="Add User", command=self.add_user).grid(row=3, column=0, columnspan=2, pady=10)
+        ttk.Button(form_frame, text="Add User", command=self.add_user).grid(
+            row=3, column=0, columnspan=2, pady=10
+        )
 
-        self.tree = ttk.Treeview(self, columns=("id", "username", "email", "role"), show="headings", selectmode="browse")
-        for col, width in [("id", 40), ("username", 200), ("email", 240), ("role", 100)]:
+        self.tree = ttk.Treeview(
+            self, columns=("id", "username", "email", "role"), show="headings", selectmode="browse"
+        )
+        for col, width in [
+            ("id", 40),
+            ("username", 200),
+            ("email", 240),
+            ("role", 100),
+        ]:
             self.tree.heading(col, text=col.capitalize())
             self.tree.column(col, width=width, anchor="center")
 
