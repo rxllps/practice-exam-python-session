@@ -32,18 +32,30 @@ class TestDatabaseManager:
         assert fetched.username == "tester"
 
     def test_create_and_fetch_task(self):
-        project_id = self.db_manager.add_project(Project("Test", "Desc", datetime.now(), datetime.now() + timedelta(days=5)))
-        user_id = self.db_manager.add_user(User("tester", "tester@example.com", "developer"))
-        task = Task("Task", "Desc", 1, datetime.now() + timedelta(days=1), project_id, user_id)
+        now = datetime.now()
+        project_id = self.db_manager.add_project(
+            Project("Test", "Desc", now, now + timedelta(days=5))
+        )
+        user_id = self.db_manager.add_user(
+            User("tester", "tester@example.com", "developer")
+        )
+        task = Task("Task", "Desc", 1, now + timedelta(days=1), project_id, user_id)
         task_id = self.db_manager.add_task(task)
         fetched = self.db_manager.get_task_by_id(task_id)
         assert fetched is not None
         assert fetched.title == "Task"
 
     def test_update_and_delete_task(self):
-        project_id = self.db_manager.add_project(Project("Test", "Desc", datetime.now(), datetime.now() + timedelta(days=5)))
-        user_id = self.db_manager.add_user(User("tester", "tester@example.com", "developer"))
-        task_id = self.db_manager.add_task(Task("Task", "Desc", 1, datetime.now() + timedelta(days=1), project_id, user_id))
+        now = datetime.now()
+        project_id = self.db_manager.add_project(
+            Project("Test", "Desc", now, now + timedelta(days=5))
+        )
+        user_id = self.db_manager.add_user(
+            User("tester", "tester@example.com", "developer")
+        )
+        task_id = self.db_manager.add_task(
+            Task("Task", "Desc", 1, now + timedelta(days=1), project_id, user_id)
+        )
         assert self.db_manager.update_task(task_id, title="Updated") is True
         fetched = self.db_manager.get_task_by_id(task_id)
         assert fetched.title == "Updated"
