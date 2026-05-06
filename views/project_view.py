@@ -1,4 +1,3 @@
-import tkinter as tk
 from tkinter import ttk, messagebox
 from datetime import datetime
 
@@ -30,10 +29,23 @@ class ProjectView(ttk.Frame):
         self.end_date_entry = ttk.Entry(form_frame, width=30)
         self.end_date_entry.grid(row=3, column=1, padx=5, pady=5, sticky="w")
 
-        ttk.Button(form_frame, text="Add Project", command=self.add_project).grid(row=4, column=0, columnspan=2, pady=10)
+        ttk.Button(form_frame, text="Add Project", command=self.add_project).grid(
+            row=4, column=0, columnspan=2, pady=10
+        )
 
-        self.tree = ttk.Treeview(self, columns=("id", "name", "status", "start_date", "end_date"), show="headings", selectmode="browse")
-        for col, width in [("id", 40), ("name", 240), ("status", 100), ("start_date", 150), ("end_date", 150)]:
+        self.tree = ttk.Treeview(
+            self,
+            columns=("id", "name", "status", "start_date", "end_date"),
+            show="headings",
+            selectmode="browse",
+        )
+        for col, width in [
+            ("id", 40),
+            ("name", 240),
+            ("status", 100),
+            ("start_date", 150),
+            ("end_date", 150),
+        ]:
             self.tree.heading(col, text=col.capitalize())
             self.tree.column(col, width=width, anchor="center")
         self.tree.pack(fill="both", expand=True, padx=10, pady=10)
@@ -47,7 +59,17 @@ class ProjectView(ttk.Frame):
         self.tree.delete(*self.tree.get_children())
         projects = self.project_controller.get_all_projects()
         for project in projects:
-            self.tree.insert("", "end", values=(project.id, project.name, project.status, project.start_date.strftime('%Y-%m-%d %H:%M'), project.end_date.strftime('%Y-%m-%d %H:%M')))
+            self.tree.insert(
+                "",
+                "end",
+                values=(
+                    project.id,
+                    project.name,
+                    project.status,
+                    project.start_date.strftime("%Y-%m-%d %H:%M"),
+                    project.end_date.strftime("%Y-%m-%d %H:%M"),
+                ),
+            )
 
     def add_project(self) -> None:
         name = self.name_entry.get().strip()
