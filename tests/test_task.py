@@ -1,4 +1,3 @@
-import pytest
 import sys
 import os
 from datetime import datetime, timedelta
@@ -8,8 +7,6 @@ sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 from database.database_manager import DatabaseManager
 from controllers.task_controller import TaskController
-from controllers.project_controller import ProjectController
-from controllers.user_controller import UserController
 from models.project import Project
 from models.user import User
 
