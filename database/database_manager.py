@@ -73,7 +73,8 @@ class DatabaseManager:
             raise TypeError("Expected Task instance")
 
         cursor = self.conn.execute(
-            "INSERT INTO tasks (title, description, priority, status, due_date, project_id, assignee_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            "INSERT INTO tasks (title, description, priority, status, due_date, "
+            "project_id, assignee_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
             (
                 task.title,
                 task.description,
