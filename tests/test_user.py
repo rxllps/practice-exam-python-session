@@ -1,4 +1,3 @@
-import pytest
 import sys
 import os
 from datetime import datetime, timedelta
@@ -70,11 +69,18 @@ class TestUserController:
     def test_get_user_tasks(self):
         user_id = self.controller.add_user("task_user", "task@example.com", "developer")
         project_controller = ProjectController(self.db_manager)
-        project_id = project_controller.add_project("Проект для задач", "Описание", datetime.now(), datetime.now() + timedelta(days=10))
+        now = datetime.now()
+        project_id = project_controller.add_project(
+            "Проект для задач", "Описание", now, now + timedelta(days=10)
+        )
 
         task_controller = TaskController(self.db_manager)
-        task_controller.add_task("Задача 1", "Описание", 1, datetime.now() + timedelta(days=1), project_id, user_id)
-        task_controller.add_task("Задача 2", "Описание", 1, datetime.now() + timedelta(days=1), project_id, user_id)
+        task_controller.add_task(
+            "Задача 1", "Описание", 1, now + timedelta(days=1), project_id, user_id
+        )
+        task_controller.add_task(
+            "Задача 2", "Описание", 1, now + timedelta(days=1), project_id, user_id
+        )
 
         tasks = self.controller.get_user_tasks(user_id)
         assert isinstance(tasks, list)
