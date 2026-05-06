@@ -27,7 +27,13 @@ class TaskView(ttk.Frame):
         self.description_entry.grid(row=1, column=1, padx=5, pady=5)
 
         self.priority_var = tk.StringVar(value="1")
-        self.priority_combo = ttk.Combobox(form_frame, textvariable=self.priority_var, values=["1", "2", "3"], width=10, state="readonly")
+        self.priority_combo = ttk.Combobox(
+            form_frame,
+            textvariable=self.priority_var,
+            values=["1", "2", "3"],
+            width=10,
+            state="readonly",
+        )
         self.priority_combo.grid(row=2, column=1, padx=5, pady=5, sticky="w")
 
         self.due_date_entry = ttk.Entry(form_frame, width=30)
@@ -51,18 +57,51 @@ class TaskView(ttk.Frame):
 
         ttk.Label(filter_frame, text="Status").grid(row=1, column=0, padx=5, pady=5)
         self.status_var = tk.StringVar(value="All")
-        self.status_combo = ttk.Combobox(filter_frame, textvariable=self.status_var, values=["All", "pending", "in_progress", "completed"], state="readonly", width=15)
+        self.status_combo = ttk.Combobox(
+            filter_frame,
+            textvariable=self.status_var,
+            values=["All", "pending", "in_progress", "completed"],
+            state="readonly",
+            width=15,
+        )
         self.status_combo.grid(row=1, column=1, padx=5, pady=5, sticky="w")
         self.status_combo.bind("<<ComboboxSelected>>", lambda _: self.refresh_tasks())
 
         ttk.Label(filter_frame, text="Priority").grid(row=1, column=2, padx=5, pady=5)
         self.priority_filter = tk.StringVar(value="All")
-        self.priority_combo = ttk.Combobox(filter_frame, textvariable=self.priority_filter, values=["All", "1", "2", "3"], state="readonly", width=10)
+        self.priority_combo = ttk.Combobox(
+            filter_frame,
+            textvariable=self.priority_filter,
+            values=["All", "1", "2", "3"],
+            state="readonly",
+            width=10,
+        )
         self.priority_combo.grid(row=1, column=3, padx=5, pady=5, sticky="w")
         self.priority_combo.bind("<<ComboboxSelected>>", lambda _: self.refresh_tasks())
 
-        self.tree = ttk.Treeview(self, columns=("id", "title", "priority", "status", "due_date", "project_id", "assignee_id"), show="headings", selectmode="browse")
-        for col, width in [("id", 40), ("title", 220), ("priority", 80), ("status", 100), ("due_date", 150), ("project_id", 80), ("assignee_id", 80)]:
+        self.tree = ttk.Treeview(
+            self,
+            columns=(
+                "id",
+                "title",
+                "priority",
+                "status",
+                "due_date",
+                "project_id",
+                "assignee_id",
+            ),
+            show="headings",
+            selectmode="browse",
+        )
+        for col, width in [
+            ("id", 40),
+            ("title", 220),
+            ("priority", 80),
+            ("status", 100),
+            ("due_date", 150),
+            ("project_id", 80),
+            ("assignee_id", 80),
+        ]:
             self.tree.heading(col, text=col.capitalize())
             self.tree.column(col, width=width, anchor="center")
 
@@ -78,7 +117,11 @@ class TaskView(ttk.Frame):
         tasks = self.task_controller.get_all_tasks()
         query = self.search_entry.get().strip().lower()
         if query:
-            tasks = [task for task in tasks if query in task.title.lower() or query in task.description.lower()]
+            tasks = [
+                task
+                for task in tasks
+                if query in task.title.lower() or query in task.description.lower()
+            ]
 
         status = self.status_var.get()
         if status and status != "All":
@@ -89,7 +132,19 @@ class TaskView(ttk.Frame):
             tasks = [task for task in tasks if str(task.priority) == priority]
 
         for task in tasks:
-            self.tree.insert("", "end", values=(task.id, task.title, task.priority, task.status, task.due_date.strftime('%Y-%m-%d %H:%M'), task.project_id, task.assignee_id))
+            self.tree.insert(
+                "",
+                "end",
+                values=(
+                    task.id,
+                    task.title,
+                    task.priority,
+                    task.status,
+                    task.due_date.strftime("%Y-%m-%d %H:%M"),
+                    task.project_id,
+                    task.assignee_id,
+                ),
+            )
 
     def add_task(self) -> None:
         title = self.title_entry.get().strip()
@@ -100,7 +155,10 @@ class TaskView(ttk.Frame):
         assignee_id = self.assignee_id_entry.get().strip()
 
         if not title or not due_date_text or not project_id or not assignee_id:
-            messagebox.showwarning("Validation error", "Title, due date, project ID and assignee ID are required")
+            messagebox.showwarning(
+                "Validation error",
+                "Title, due date, project ID and assignee ID are required",
+            )
             return
 
         try:
@@ -108,7 +166,10 @@ class TaskView(ttk.Frame):
             project_id = int(project_id)
             assignee_id = int(assignee_id)
         except ValueError:
-            messagebox.showerror("Validation error", "Please provide correct types for due date, project ID and assignee ID")
+            messagebox.showerror(
+                "Validation error",
+                "Please provide correct types for due date, project ID and assignee ID",
+            )
             return
 
         try:
